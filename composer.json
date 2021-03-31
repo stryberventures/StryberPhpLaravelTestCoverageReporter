@@ -10,7 +10,7 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "php": ">=7.4",
+        "php": "^8.0",
         "ext-simplexml": "*",
         "laravel/framework": "^8.0",
         "phpunit/phpunit": "^9.3.3",
