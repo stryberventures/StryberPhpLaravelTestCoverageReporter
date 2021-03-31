@@ -1,0 +1,26 @@
+{
+    "name": "stryber/laravel-test-coverage-reporter",
+    "description": "Simple tool to send test coverage reports and generate badge",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Aleksandr Zhylinskiy",
+            "email": "aleksandr@stryber.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=7.4",
+        "ext-xml": "*",
+        "phpunit/phpunit": "^9.3.3",
+        "guzzlehttp/guzzle": "^7.0",
+        "illuminate/foundation": "^8.0",
+        "illuminate/contracts": "^8.12",
+        "illuminate/console": "^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Stryber\\CoverageReporter\\": "src/"
+        }
+    }
+}
