@@ -12,7 +12,7 @@ class CoverageReporterServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->publishes([
-            __DIR__ . '/../config/laravel-test-coverage-reporter.php' => config_path('laravel-test-coverage-reporter.php')
+            __DIR__ . '/../config/laravel-test-coverage-reporter.php' => $this->app->configPath('laravel-test-coverage-reporter.php')
         ]);
 
         if ($this->app->runningInConsole()) {

@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Stryber\CoverageReporter\Commands;
 
+use Illuminate\Support\Facades\App;
 use InvalidArgumentException;
 use SimpleXMLElement;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Config;
 
 class GenerateCoverageReportCommand extends Command
 {
@@ -19,7 +21,7 @@ class GenerateCoverageReportCommand extends Command
 
     public function handle(): void
     {
-        $serviceURL = config('laravel-test-coverage-reporter.service_url');
+        $serviceURL = Config::get('laravel-test-coverage-reporter.service_url');
 
         if (trim($serviceURL) === '') {
             $this->error('Service URL was not specified, check .env and/or laravel-test-coverage-reporter.php config file');
@@ -27,7 +29,7 @@ class GenerateCoverageReportCommand extends Command
         }
 
         // Generate PHPUnit clover report first
-        $cloverReportFilename = config('laravel-test-coverage-reporter.clover_report_filename');
+        $cloverReportFilename = Config::get('laravel-test-coverage-reporter.clover_report_filename');
         $this->call("test --coverage-clover $cloverReportFilename");
 
         $repositoryName = $this->argument('repository');
@@ -57,8 +59,8 @@ class GenerateCoverageReportCommand extends Command
 
     protected function composePayload(string $repositoryName, int $coverage): array
     {
-        $repositoryNameKey = config('laravel-test-coverage-reporter.payload_repository_key');
-        $coverageKey = config('laravel-test-coverage-reporter.payload_coverage_percentage_key');
+        $repositoryNameKey = Config::get('laravel-test-coverage-reporter.payload_repository_key');
+        $coverageKey = Config::get('laravel-test-coverage-reporter.payload_coverage_percentage_key');
 
         return [
             $repositoryNameKey => $repositoryName,
@@ -68,7 +70,7 @@ class GenerateCoverageReportCommand extends Command
 
     private function parseCloverCoverageReport(): int
     {
-        $cloverPath = base_path() . '/' . config('laravel-test-coverage-reporter.clover_report_filename');
+        $cloverPath = App::basePath() . '/' . Config::get('laravel-test-coverage-reporter.clover_report_filename');
 
         if (!file_exists($cloverPath)) {
             throw new InvalidArgumentException('No Clover Coverage was generated');
@@ -110,7 +112,7 @@ class GenerateCoverageReportCommand extends Command
         $template = str_replace('{{ total }}', $coverage, $template);
         $template = str_replace('{{ color }}', $color, $template);
 
-        file_put_contents(base_path() . '/coverage.svg', $template);
+        file_put_contents(App::basePath() . '/coverage.svg', $template);
 
         $this->info('Badge generated: coverage.svg');
     }
