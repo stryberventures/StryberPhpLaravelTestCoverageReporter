@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Stryber\CoverageReporter\Commands;
 
+use InvalidArgumentException;
+use SimpleXMLElement;
+use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Console\Command;
 
-class GenerateCoverageReport extends Command
+class GenerateCoverageReportCommand extends Command
 {
     protected $signature = 'coverage:report {repository} {--badge}';
 
@@ -46,7 +49,7 @@ class GenerateCoverageReport extends Command
         if ($this->option('--badge')) {
             try {
                 $this->generateCoverageBadge($coverage);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->error($e->getMessage());
             }
         }
@@ -68,10 +71,10 @@ class GenerateCoverageReport extends Command
         $cloverPath = base_path() . '/' . config('laravel-test-coverage-reporter.clover_report_filename');
 
         if (!file_exists($cloverPath)) {
-            throw new \InvalidArgumentException('No Clover Coverage was generated');
+            throw new InvalidArgumentException('No Clover Coverage was generated');
         }
 
-        $xml = new \SimpleXMLElement(file_get_contents($cloverPath));
+        $xml = new SimpleXMLElement(file_get_contents($cloverPath));
         $metrics = $xml->xpath('//metrics');
         $totalElements = 0;
         $checkedElements = 0;
