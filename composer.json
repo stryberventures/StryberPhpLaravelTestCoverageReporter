@@ -22,5 +22,12 @@
         "psr-4": {
             "Stryber\\CoverageReporter\\": "src/"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Stryber\\CoverageReporter\\CoverageReporterServiceProvider"
+            ]
+        }
     }
 }

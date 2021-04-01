@@ -13,7 +13,7 @@ class CoverageReporterServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/../config/laravel-test-coverage-reporter.php' => $this->app->configPath('laravel-test-coverage-reporter.php')
-        ]);
+        ], 'stryber-coverage-reporter');
 
         if ($this->app->runningInConsole()) {
             $this->commands([GenerateCoverageReportCommand::class]);
