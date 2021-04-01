@@ -114,7 +114,7 @@ class GenerateCoverageReportCommand extends Command
             $color = '#4c1';     // Bright Green
         }
 
-        $template = str_replace('{{ total }}', $coverage, $template);
+        $template = str_replace('{{ total }}', strval($coverage), $template);
         $template = str_replace('{{ color }}', $color, $template);
 
         file_put_contents(App::basePath() . '/coverage.svg', $template);
