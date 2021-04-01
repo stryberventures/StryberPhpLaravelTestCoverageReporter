@@ -12,6 +12,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
+use Symfony\Component\Process\Process;
 
 class GenerateCoverageReportCommand extends Command
 {
@@ -30,7 +31,11 @@ class GenerateCoverageReportCommand extends Command
 
         // Generate PHPUnit clover report first
         $cloverReportFilename = Config::get('laravel-test-coverage-reporter.clover_report_filename');
-        $this->call("test --coverage-clover $cloverReportFilename");
+
+        $process = new Process(['php', 'artisan', 'test', '--coverage-clover', $cloverReportFilename]);
+        $process->run();
+
+        $this->info($process->getOutput());
 
         $repositoryName = $this->argument('repository');
 
