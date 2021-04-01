@@ -53,7 +53,7 @@ class GenerateCoverageReportCommand extends Command
             $this->error('Failed to send POST request: ' . $e->getMessage());
         }
 
-        if ($this->option('--badge')) {
+        if ($this->option('badge')) {
             try {
                 $this->generateCoverageBadge($coverage);
             } catch (Exception $e) {
